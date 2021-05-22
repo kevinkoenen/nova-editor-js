@@ -23,7 +23,12 @@
                 this.value = this.field.value;
 
                 let self = this;
-                let currentContent = (self.field.value ? JSON.parse(self.field.value) : self.field.value);
+                let stringConstructor = "pokeform".constructor;
+                let currentContent = (self.field.value &&
+                    self.field.value.constructor === stringConstructor ?
+                        JSON.parse(self.field.value) :
+                        self.field.value
+                );
 
                 const editor = NovaEditorJS.getInstance({
                     /**
@@ -71,7 +76,7 @@
              * Fill the given FormData object with the field's internal value.
              */
             fill(formData) {
-                formData.append(this.field.attribute, this.value || '')
+                formData.append(this.field.attribute, JSON.stringify(this.value) || '')
             },
 
             /**
